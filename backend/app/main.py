@@ -17,6 +17,7 @@ from app.routes import (
     health_router,
     reports_router,
     health_records_router,
+    health_alias_router,
     reminders_router,
 )
 
@@ -117,6 +118,7 @@ app.include_router(health_router)
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(reports_router, prefix=settings.API_V1_STR)
 app.include_router(health_records_router, prefix=settings.API_V1_STR)
+app.include_router(health_alias_router, prefix=settings.API_V1_STR)
 app.include_router(reminders_router, prefix=settings.API_V1_STR)
 app.include_router(ai_router, prefix=settings.API_V1_STR)
 app.include_router(documents_router, prefix=settings.API_V1_STR)

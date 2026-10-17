@@ -20,6 +20,7 @@ router = APIRouter(prefix="/reports", tags=["CareBridge AI — Medical Reports"]
 
 
 @router.post("", response_model=MedicalReportResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/upload", response_model=MedicalReportResponse, status_code=status.HTTP_201_CREATED)
 def upload_report(
     file: UploadFile = File(...),
     title: str = Form("Medical Laboratory Report"),
@@ -158,6 +159,7 @@ def explain_report(
 
 
 @router.get("/{report_id}/summary", response_model=ReportExplanationResponse)
+@router.get("/{report_id}/analysis", response_model=ReportExplanationResponse)
 def get_report_summary(
     report_id: int,
     current_user: User = Depends(get_current_user),

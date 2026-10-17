@@ -78,3 +78,25 @@ def update_reminder(
     db.commit()
     db.refresh(reminder)
     return reminder
+
+
+@router.patch("/{reminder_id}/complete", response_model=ReminderResponse)
+def complete_reminder(
+    reminder_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Marks a reminder as completed (frontend compatibility alias)."""
+    reminder = (
+        db.query(Reminder)
+        .filter(Reminder.id == reminder_id, Reminder.user_id == current_user.id)
+        .first()
+    )
+    if not reminder:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Reminder not found")
+
+    reminder.is_completed = True
+    reminder.completed_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(reminder)
+    return reminder

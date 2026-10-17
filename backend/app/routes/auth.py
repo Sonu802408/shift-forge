@@ -57,14 +57,23 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
     expires_delta = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     token = create_access_token(subject=user.id, role=user.role.value, expires_delta=expires_delta)
 
+    user_data = {
+        "id": str(user.id),
+        "fullName": user.full_name,
+        "email": user.email,
+        "role": user.role.value,
+        "phone": user.phone or "",
+    }
     return Token(
         access_token=token,
+        token=token,
         token_type="bearer",
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         user_id=user.id,
         email=user.email,
         role=user.role.value,
         full_name=user.full_name,
+        user=user_data,
     )
 
 
@@ -80,14 +89,23 @@ def login_form(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
         )
     expires_delta = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     token = create_access_token(subject=user.id, role=user.role.value, expires_delta=expires_delta)
+    user_data = {
+        "id": str(user.id),
+        "fullName": user.full_name,
+        "email": user.email,
+        "role": user.role.value,
+        "phone": user.phone or "",
+    }
     return Token(
         access_token=token,
+        token=token,
         token_type="bearer",
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         user_id=user.id,
         email=user.email,
         role=user.role.value,
         full_name=user.full_name,
+        user=user_data,
     )
 
 
